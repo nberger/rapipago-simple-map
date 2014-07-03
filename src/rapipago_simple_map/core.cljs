@@ -60,3 +60,10 @@
           stores (<! stores-chan)]
       (println (str "encontrados " (count stores) " stores"))
       (process-stores gmap stores))))
+
+(go
+  (while true
+    (let [{:keys [bounds center] :as e} (<! map-bounds-chan)
+          top-right (.getNorthEast bounds)
+          bottom-left (.getSouthWest bounds)]
+      (println top-right))))
