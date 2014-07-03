@@ -21,7 +21,7 @@
                           :lng -58.396726
                         }))
 
-(.on gmap "dragend" #(put! map-bounds-chan {:bounds (.getBounds gmap)
+(.on gmap "bounds_changed" #(put! map-bounds-chan {:bounds (.getBounds gmap)
                                             :center (.getCenter gmap)}))
 
 (def api-url "http://localhost:3001")
