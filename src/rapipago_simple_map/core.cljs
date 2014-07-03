@@ -10,11 +10,6 @@
 
 (def map-bounds-chan (chan (sliding-buffer 1)))
 
-(def map-options #js
-  {:div "#map"
-   :zoom 14
-   })
-
 (def gmap (js/GMaps. #js {:div "#map"
                           :zoom 14
                           :lat -34.603272
@@ -38,20 +33,30 @@
 (defn info-window [store]
   (str "<p>" (:name store) "</p>\n<p>" (:address store) "</p>"))
 
-(defn process-stores [stores]
+(defn build-marker [store]
+  #js {:lat (get-in store [:location :lat])
+       :lng (get-in store [:location :lon])
+       :title (:name store)
+       :infoWindow #js {:content (info-window store)}})
+
+(defn process-stores [gmap stores]
   (doseq [store stores]
-    (.addMarker gmap #js {:lat (get-in store [:location :lat])
-                          :lng (get-in store [:location :lon])
-                          :title (:name store)
-                          :infoWindow #js {:content (info-window store)}})))
+    (.addMarker gmap (build-marker store))))
 
 (go
   (while true
     (let [{:keys [bounds center] :as e} (<! map-bounds-chan)
+          top-right (.getNorthEast bounds)
+          bottom-left (.getSouthWest bounds)
+          url (str api-url
+                   "/bounding_box/"
+                   (.lat top-right) ","
+                   (.lng top-right) ","
+                   (.lat bottom-left) ","
+                   (.lng bottom-left)
+                   "/stores")
           stores-chan (json-xhr {:method "GET"
-                                 :url (str api-url
-                                           "/location/" (.lat center) "," (.lng center)
-                                           "/distance/1500m/stores")})
+                                 :url url})
           stores (<! stores-chan)]
       (println (str "encontrados " (count stores) " stores"))
-      (process-stores stores))))
+      (process-stores gmap stores))))
