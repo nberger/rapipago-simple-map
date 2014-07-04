@@ -9,6 +9,7 @@
 (enable-console-print!)
 
 (def map-bounds-chan (chan (sliding-buffer 1)))
+(def api-url "http://localhost:3001")
 
 (def gmap (js/GMaps. #js {:div "#map"
                           :zoom 14
@@ -16,10 +17,7 @@
                           :lng -58.396726
                         }))
 
-(.on gmap "bounds_changed" #(put! map-bounds-chan {:bounds (.getBounds gmap)
-                                            :center (.getCenter gmap)}))
-
-(def api-url "http://localhost:3001")
+(.on gmap "bounds_changed" #(put! map-bounds-chan {:bounds (.getBounds gmap)}))
 
 (defn json-xhr [{:keys [method url]}]
   (let [xhr (XhrIo.)
@@ -45,7 +43,8 @@
 
 (go
   (while true
-    (let [{:keys [bounds center] :as e} (<! map-bounds-chan)
+    (let [message (<! map-bounds-chan)
+          bounds (:bounds message)
           top-right (.getNorthEast bounds)
           bottom-left (.getSouthWest bounds)
           url (str api-url
@@ -63,7 +62,7 @@
 
 (go
   (while true
-    (let [{:keys [bounds center] :as e} (<! map-bounds-chan)
+    (let [{:keys [bounds]} (<! map-bounds-chan)
           top-right (.getNorthEast bounds)
           bottom-left (.getSouthWest bounds)]
       (println top-right))))
