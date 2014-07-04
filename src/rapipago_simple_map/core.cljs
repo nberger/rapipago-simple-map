@@ -38,8 +38,8 @@
        :infoWindow #js {:content (info-window store)}})
 
 (defn process-stores [gmap stores]
-  (doseq [store stores]
-    (.addMarker gmap (build-marker store))))
+  (.removeMarkers gmap)
+  (.addMarkers gmap (clj->js (mapv build-marker stores))))
 
 (go
   (while true
