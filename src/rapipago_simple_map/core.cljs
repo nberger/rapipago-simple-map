@@ -1,5 +1,6 @@
 (ns rapipago_simple_map.core
-  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require-macros [cljs.core.async.macros :refer [go]]
+                   [rapipago_simple_map.config :refer [api-url]])
   (:require [cljs.core.async :refer [<! >! chan put! sliding-buffer]]
             [goog.events :as events])
   (:import [goog.net XhrIo]
@@ -9,7 +10,6 @@
 (enable-console-print!)
 
 (def map-bounds-chan (chan (sliding-buffer 1)))
-(def api-url "http://localhost:3001")
 
 (def gmap (js/GMaps. #js {:div "#map"
                           :zoom 14
@@ -47,7 +47,7 @@
           bounds (:bounds message)
           top-right (.getNorthEast bounds)
           bottom-left (.getSouthWest bounds)
-          url (str api-url
+          url (str (api-url)
                    "/bounding_box/"
                    (.lat top-right) ","
                    (.lng top-right) ","
