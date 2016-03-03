@@ -8,6 +8,8 @@
 
   :plugins [[lein-cljsbuild "1.1.2"]]
 
+  :min-lein-version "2.0.0"
+
   :source-paths ["src"]
 
   :cljsbuild {
