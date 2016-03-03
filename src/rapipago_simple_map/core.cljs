@@ -1,7 +1,7 @@
 (ns rapipago_simple_map.core
   (:require-macros [cljs.core.async.macros :refer [go]]
                    [rapipago-simple-map.config :refer [api-url]])
-  (:require [cljs.core.async :refer [<! >! chan put! sliding-buffer]]
+  (:require [cljs.core.async :as async :refer [<! >! chan put! sliding-buffer]]
             [goog.events :as events])
   (:import [goog.net XhrIo]
            goog.net.EventType
