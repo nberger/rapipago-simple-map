@@ -43,6 +43,7 @@
 
 (go
   (while true
+    (<! (async/timeout 500))
     (let [message (<! map-bounds-chan)
           bounds (:bounds message)
           top-right (.getNorthEast bounds)
