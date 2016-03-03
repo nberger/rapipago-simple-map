@@ -16,5 +16,4 @@
               :compiler {
                 :output-to "rapipago_simple_map.js"
                 :output-dir "out"
-                :optimizations :none
-                :source-map true}}]})
+                :optimizations :simple}}]})
