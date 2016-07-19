@@ -1,10 +1,13 @@
 pom.xml
-*jar
+pom.xml.asc
+*.jar
+*.class
 /lib/
 /classes/
-/out/
 /target/
+/checkouts/
 .lein-deps-sum
 .lein-repl-history
 .lein-plugins/
-rapipago_simple_map.js
+.lein-failures
+.nrepl-port
