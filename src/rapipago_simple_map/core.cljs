@@ -14,8 +14,8 @@
 (def gmap (js/GMaps. #js {:div "#map"
                           :zoom 14
                           :lat -34.603272
-                          :lng -58.396726
-                        }))
+                          :lng -58.396726}))
+
 
 (.on gmap "bounds_changed" #(put! map-bounds-chan {:bounds (.getBounds gmap)}))
 
