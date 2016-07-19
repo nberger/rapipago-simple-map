@@ -13,9 +13,9 @@
   :source-paths ["src"]
 
   :cljsbuild {
-    :builds [{:id "rapipago_simple_map"
-              :source-paths ["src"]
-              :compiler {
-                :output-to "rapipago_simple_map.js"
-                :output-dir "out"
-                :optimizations :simple}}]})
+              :builds [{:id "rapipago_simple_map"
+                        :source-paths ["src"]
+                        :compiler {
+                                   :output-to "rapipago_simple_map.js"
+                                   :output-dir "out"
+                                   :optimizations :simple}}]})
